@@ -17,11 +17,24 @@ def hog(img):
 	angFourBlocks = [angsInDegree[:x_size / 2, :y_size / 2], angsInDegree[x_size / 2:, :y_size / 2], angsInDegree[:x_size / 2, y_size / 2:], angsInDegree[x_size / 2:, y_size / 2:]];
 	# count the occurrences
 	occur = [np.bincount(i.ravel(), j.ravel(), bin_n) for i, j in zip(angFourBlocks, magFourBlocks)];
+
 	return np.hstack(occur);
 
 img = [];
 for i in glob(join(dirname(__file__) + 'cat', '*.jpg')):
 	img.append(cv2.imread(i, 0));
+catNum = len(img);
+for i in glob(join(dirname(__file__) + 'other', '*.jpg')):
+	img.append(cv2.imread(i, 0));
+hogData = np.float32(map(hog, img)).reshape(-1, bin_n * 4);
+dataResult = np.float32(np.repeat(1.0, len(img))).reshape(len(img), 1);
+dataResult[catNum : len(img)] = 0;
 
-temp = hog(img[0]);
+svmParams = dict(kernel_type = cv2.SVM_LINEAR, svm_type = cv2.SVM_C_SVC, C = 2.67, gamma = 5.383);
+#print dataResult;
+#print np.float32(hogData).shape;
+svm = cv2.SVM();
+svm.train(hogData, dataResult, params = svmParams);
+svm.save("svm_cat_data.dat");
+
 

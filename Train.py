@@ -21,10 +21,10 @@ def hog(img):
 	return np.hstack(occur);
 
 img = [];
-for i in glob(join(dirname(__file__) + 'cat', '*.jpg')):
+for i in glob(join(dirname(__file__) + '/cat', '*.jpg')):
 	img.append(cv2.imread(i, 0));
 catNum = len(img);
-for i in glob(join(dirname(__file__) + 'other', '*.jpg')):
+for i in glob(join(dirname(__file__) + '/other', '*.jpg')):
 	img.append(cv2.imread(i, 0));
 hogData = np.float32(map(hog, img)).reshape(-1, bin_n * 4);
 dataResult = np.float32(np.repeat(1.0, len(img))).reshape(len(img), 1);

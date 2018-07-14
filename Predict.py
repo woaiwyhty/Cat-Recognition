@@ -21,7 +21,7 @@ def hog(img):
 	return np.hstack(occur);
 
 img = [];
-for i in glob(join(dirname(__file__) + 'predict', '*.jpg')):
+for i in glob(join(dirname(__file__) + '/predict', '*.jpg')):
 	img.append(cv2.imread(i, 0));
 
 hogData = np.float32(map(hog, img)).reshape(-1, bin_n * 4);
